@@ -1,0 +1,177 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+@layer base {
+  :root {
+    /* Updated color tokens for Nexus AI brand */
+    /* Nexus AI Color System */
+    --ink-900: 212 47% 19%; /* #212a3f */
+    --indigo-800: 252 24% 24%; /* #3c2d47 */
+    --violet-400: 270 25% 62%; /* #9c85b3 */
+    --surface-0: 0 0% 100%; /* #ffffff */
+    --surface-50: 220 43% 97%; /* #f6f7fb */
+
+    /* Base theme colors */
+    --background: 220 43% 97%; /* Light background */
+    --foreground: 212 47% 19%; /* Dark text */
+
+    --muted: 220 14% 96%;
+    --muted-foreground: 212 47% 19% / 0.6;
+
+    --card: 0 0% 100%;
+    --card-foreground: 212 47% 19%;
+
+    --popover: 0 0% 100%;
+    --popover-foreground: 212 47% 19%;
+
+    /* Primary brand color - violet */
+    --primary: 270 25% 62%; /* #9c85b3 */
+    --primary-foreground: 0 0% 100%;
+
+    /* Secondary colors */
+    --secondary: 220 14% 96%;
+    --secondary-foreground: 212 47% 19%;
+
+    --accent: 220 14% 96%;
+    --accent-foreground: 212 47% 19%;
+
+    --border: 220 13% 91%;
+    --input: 220 13% 91%;
+    --ring: 270 25% 62%;
+
+    --radius: 1rem; /* 16px for modern rounded corners */
+
+    /* Destructive colors */
+    --destructive: 0 84% 60%;
+    --destructive-foreground: 0 0% 98%;
+  }
+
+  .dark {
+    /* Dark mode variants */
+    --background: 212 47% 8%; /* Very dark blue */
+    --foreground: 0 0% 98%;
+
+    --muted: 212 47% 12%;
+    --muted-foreground: 0 0% 63.9%;
+
+    --card: 212 47% 10%;
+    --card-foreground: 0 0% 98%;
+
+    --popover: 212 47% 10%;
+    --popover-foreground: 0 0% 98%;
+
+    --primary: 270 25% 62%;
+    --primary-foreground: 0 0% 9%;
+
+    --secondary: 212 47% 12%;
+    --secondary-foreground: 0 0% 98%;
+
+    --accent: 212 47% 12%;
+    --accent-foreground: 0 0% 98%;
+
+    --border: 212 47% 12%;
+    --input: 212 47% 12%;
+    --ring: 270 25% 62%;
+
+    --destructive: 0 62.8% 30.6%;
+    --destructive-foreground: 0 0% 98%;
+  }
+}
+
+@layer base {
+  * {
+    @apply border-border;
+  }
+  body {
+    @apply bg-background text-foreground;
+    font-feature-settings: "rlig" 1, "calt" 1;
+  }
+}
+
+/* Added custom utility classes for Nexus AI */
+@layer utilities {
+  .text-balance {
+    text-wrap: balance;
+  }
+
+  .text-pretty {
+    text-wrap: pretty;
+  }
+
+  .content-width {
+    max-width: 1200px;
+    margin-left: auto;
+    margin-right: auto;
+  }
+
+  .page-gutters {
+    @apply px-4 sm:px-6 lg:px-8;
+  }
+
+  .section-spacing {
+    @apply py-16 md:py-24;
+  }
+
+  .section-sep {
+    height: 1px;
+    background: linear-gradient(90deg, rgba(0,0,0,0) 0%, rgba(148,163,184,0.35) 50%, rgba(0,0,0,0) 100%);
+  }
+
+  /* Glassmorphism utility */
+  .glass {
+    background: rgba(255, 255, 255, 0.1);
+    backdrop-filter: blur(10px);
+    border: 1px solid rgba(255, 255, 255, 0.2);
+  }
+
+  /* Updated gradient backgrounds to match specification */
+  .gradient-hero {
+    background: linear-gradient(180deg, #131326 0%, #3e3a7a 100%);
+  }
+
+  .gradient-violet {
+    background: linear-gradient(135deg, #3c2d47 0%, #212a3f 100%);
+  }
+
+  /* Added responsive behavior utilities */
+  @media (max-width: 767px) {
+    .hero-mobile-stack {
+      position: static !important;
+      transform: none !important;
+      margin-top: 2rem;
+    }
+
+    .hero-mobile-stack:first-child {
+      margin-top: 1rem;
+    }
+  }
+
+  /* Call controls hover effects */
+  .hover\:scale-102:hover {
+    transform: scale(1.02);
+  }
+}
+
+/* Typography scale for modern grotesk feel */
+@layer components {
+  .heading-1 {
+    @apply text-5xl md:text-6xl font-bold leading-tight tracking-tight;
+  }
+
+  .heading-2 {
+    @apply text-4xl md:text-5xl font-bold leading-tight tracking-tight;
+  }
+
+  .heading-3 {
+    @apply text-2xl md:text-3xl font-semibold leading-tight;
+  }
+
+  .body-large {
+    @apply text-lg md:text-xl leading-relaxed;
+  }
+
+  .body-base {
+    @apply text-base md:text-lg leading-relaxed;
+  }
+}
