@@ -1,7 +1,6 @@
 "use client"
 
-import type React from "react"
-import { useState, useEffect } from "react"
+import React, { useState, useEffect } from "react"
 import { Button } from "@/components/ui/button"
 import { Sheet, SheetContent, SheetHeader, SheetTitle, SheetTrigger } from "@/components/ui/sheet"
 import { Menu } from "lucide-react"
@@ -40,11 +39,9 @@ export function HeaderNav() {
 
   return (
     <motion.header
-      className={`fixed top-0 left-0 right-0 z-50 transition-all duration-300 ${
-        isScrolled ? "backdrop-blur-md shadow-lg" : "backdrop-blur-sm"
-      }`}
+      className="fixed top-0 left-0 right-0 z-50"
       style={{
-        backgroundColor: "rgba(11, 13, 20, 0.9)",
+        backgroundColor: "#000000",
       }}
       initial={{ y: -100, opacity: 0 }}
       animate={{ y: 0, opacity: 1 }}
@@ -75,7 +72,7 @@ export function HeaderNav() {
                 <Link
                   href={item.href}
                   onClick={(e) => handleScroll(e, item.href)}
-                  className="text-white/80 hover:text-white transition-opacity duration-200 font-medium text-sm"
+                  className="text-white hover:opacity-80 transition-opacity duration-200 font-medium text-sm"
                   data-track="header-nav"
                 >
                   {item.name}
@@ -85,23 +82,22 @@ export function HeaderNav() {
           </nav>
 
           <motion.div
-            className="hidden lg:flex items-center space-x-4"
+            className="hidden lg:flex items-center space-x-3"
             initial={{ opacity: 0, x: 20 }}
             animate={{ opacity: 1, x: 0 }}
             transition={{ duration: 0.6, delay: 0.4 }}
           >
             <Button
-              variant="ghost"
-              className="text-white/80 hover:text-white hover:bg-transparent transition-opacity duration-200 text-sm font-medium"
+              className="bg-[#8A2BE2] hover:bg-[#7A1BD2] active:bg-[#6B1BC2] text-white font-semibold px-6 py-2.5 text-sm rounded-sm transition-all duration-300 hover:scale-105 hover:shadow-lg hover:shadow-[#8A2BE2]/50 active:scale-100 focus:outline-none focus:ring-2 focus:ring-[#8A2BE2] focus:ring-offset-2 focus:ring-offset-black"
               data-track="header-signin"
             >
               Sign In
             </Button>
             <Button
-              className="bg-[#8B5CF6] hover:bg-[#7C3AED] text-white font-medium px-6 text-sm rounded-xl transition-colors duration-200"
+              className="bg-[#8A2BE2] hover:bg-[#7A1BD2] active:bg-[#6B1BC2] text-white font-semibold px-7 py-2.5 text-sm rounded-sm transition-all duration-300 hover:scale-105 hover:shadow-lg hover:shadow-[#8A2BE2]/50 active:scale-100 focus:outline-none focus:ring-2 focus:ring-[#8A2BE2] focus:ring-offset-2 focus:ring-offset-black"
               data-track="header-cta"
             >
-              Get started
+              Start Free Trial
             </Button>
           </motion.div>
 
@@ -119,7 +115,7 @@ export function HeaderNav() {
                 </Button>
               </motion.div>
             </SheetTrigger>
-            <SheetContent side="right" className="bg-[#0B0D14] border-l border-white/10">
+            <SheetContent side="right" className="bg-[#000000] border-l border-white/10">
               <SheetHeader>
                 <SheetTitle className="text-left text-xl font-bold text-white">Nxsus.</SheetTitle>
               </SheetHeader>
@@ -135,10 +131,12 @@ export function HeaderNav() {
                   </Link>
                 ))}
                 <div className="flex flex-col space-y-3 pt-6 border-t border-white/10">
-                  <Button variant="ghost" className="text-white/80 hover:text-white hover:bg-white/10 justify-start">
+                  <Button className="bg-[#8A2BE2] hover:bg-[#7A1BD2] active:bg-[#6B1BC2] text-white font-semibold py-3 rounded-sm justify-start transition-all duration-300 hover:shadow-lg hover:shadow-[#8A2BE2]/50 active:scale-95 focus:outline-none focus:ring-2 focus:ring-[#8A2BE2] focus:ring-offset-2 focus:ring-offset-black">
                     Sign In
                   </Button>
-                  <Button className="bg-[#8B5CF6] hover:bg-[#7C3AED] text-white font-medium">Get started</Button>
+                  <Button className="bg-[#8A2BE2] hover:bg-[#7A1BD2] active:bg-[#6B1BC2] text-white font-semibold py-3 rounded-sm transition-all duration-300 hover:shadow-lg hover:shadow-[#8A2BE2]/50 active:scale-95 focus:outline-none focus:ring-2 focus:ring-[#8A2BE2] focus:ring-offset-2 focus:ring-offset-black">
+                    Start Free Trial
+                  </Button>
                 </div>
               </nav>
             </SheetContent>

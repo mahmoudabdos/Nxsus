@@ -68,7 +68,7 @@ export function FaqDark() {
           whileInView="show"
           viewport={{ once: true, amount: 0.3 }}
           variants={container}
-          className="space-y-4"
+          className="space-y-10 md:space-y-12"
           role="list"
         >
           <Accordion type="single" collapsible value={open} onValueChange={(v) => setOpen(v)} className="w-full">
