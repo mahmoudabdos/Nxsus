@@ -1,9 +1,6 @@
 'use client'
 
 import * as React from 'react'
-import { motion, useReducedMotion } from 'framer-motion'
-import { Accordion, AccordionContent, AccordionItem, AccordionTrigger } from '@/components/ui/accordion'
-import { cn } from '@/lib/utils'
 
 type Faq = { id: string; q: string; a: string }
 
@@ -17,146 +14,151 @@ const FAQS: Faq[] = [
 ]
 
 export function FaqDark() {
-  const prefersReduced = useReducedMotion()
-  const [mounted, setMounted] = React.useState(false)
-  const [open, setOpen] = React.useState<string | undefined>(undefined)
-  const [hovered, setHovered] = React.useState<string | null>(null)
-  React.useEffect(() => {
-    setMounted(true)
-    const hash = window.location.hash.replace('#', '')
-    if (hash.startsWith('faq-')) {
-      setOpen(hash.slice(4))
-    }
-  }, [])
+  const [openItem, setOpenItem] = React.useState<string | null>(null)
+  const contentRefs = React.useRef<{ [key: string]: HTMLDivElement | null }>({})
 
   React.useEffect(() => {
-    if (!open) return
-    const id = `faq-${open}`
-    history.replaceState(null, '', `#${id}`)
-    const el = document.getElementById(id)
-    el?.scrollIntoView({ behavior: mounted && prefersReduced ? 'auto' : 'smooth', block: 'start' })
-  }, [open, prefersReduced, mounted])
+    // Update heights when openItem changes
+    FAQS.forEach((f) => {
+      const content = contentRefs.current[`content-${f.id}`]
+      if (content) {
+        const isOpen = openItem === f.id
+        if (isOpen) {
+          // Set to scrollHeight for smooth expansion
+          const scrollHeight = content.scrollHeight
+          content.style.maxHeight = `${scrollHeight}px`
+        } else {
+          // Set to 0 for smooth collapse
+          content.style.maxHeight = '0px'
+        }
+      }
+    })
+  }, [openItem])
 
-  const container = {
-    hidden: { opacity: 0, y: 12 },
-    show: { opacity: 1, y: 0, transition: { staggerChildren: prefersReduced ? 0 : 0.07 } },
+  const toggleItem = (id: string) => {
+    setOpenItem((prev) => {
+      return prev === id ? null : id
+    })
   }
 
-  const item = {
-    hidden: { opacity: 0, y: prefersReduced ? 0 : 12 },
-    show: { opacity: 1, y: 0, transition: { duration: 0.26, ease: [0.2, 0.8, 0.2, 1] } },
+  const handleKeyDown = (e: React.KeyboardEvent, id: string) => {
+    if (e.key === 'Enter' || e.key === ' ') {
+      e.preventDefault()
+      toggleItem(id)
+    }
   }
 
   return (
     <section
       aria-labelledby="faq-title"
       className="relative py-16 sm:py-20 md:py-24 lg:py-28"
-      style={{ background: '#0A0E13' }}
+      style={{ background: '#000000' }}
     >
-      <div className="mx-auto w-full max-w-[1100px] px-4 sm:px-6 md:px-8">
-        <div className="text-center mb-8 sm:mb-10 md:mb-12">
-          <h2 id="faq-title" className="font-extrabold text-white text-3xl sm:text-4xl md:text-5xl lg:text-[44px] leading-tight" style={{ lineHeight: 1.1 }}>
+      <div className="mx-auto w-full max-w-[900px] px-4 sm:px-6 md:px-8">
+        <div className="text-center">
+          <h2 
+            id="faq-title" 
+            className="text-[32px] sm:text-[36px] font-bold mb-0"
+            style={{ color: '#f8f9fa' }}
+          >
             Frequently Asked Questions
           </h2>
-          <p className="mx-auto text-base sm:text-lg md:text-xl text-slate-300/90 leading-relaxed max-w-[70ch] mt-3 sm:mt-4" style={{ lineHeight: 1.7 }}>
+          <p 
+            className="text-base sm:text-lg font-normal mt-4"
+            style={{ color: '#b0b3b8', marginBottom: '40px' }}
+          >
             Everything you need to know about Nxsus AI
           </p>
         </div>
 
-        <motion.ul
-          initial="hidden"
-          whileInView="show"
-          viewport={{ once: true, amount: 0.3 }}
-          variants={container}
-          className="space-y-10 md:space-y-12"
-          role="list"
-        >
-          <Accordion type="single" collapsible value={open} onValueChange={(v) => setOpen(v)} className="w-full">
-            {FAQS.map((f) => (
-              <motion.li key={f.id} variants={item}>
-                <AccordionItem
-                  value={f.id}
-                  id={`faq-${f.id}`}
-                  className={cn(
-                    'rounded-[16px] border',
-                    'transition-colors',
-                  )}
+        <div className="space-y-4 sm:space-y-[18px]">
+          {FAQS.map((f) => {
+            const isOpen = openItem === f.id
+            return (
+              <div
+                key={f.id}
+                id={`faq-${f.id}`}
+                className="rounded-[10px] transition-colors duration-200"
+                style={{
+                  background: isOpen ? '#273049' : '#111827',
+                  marginBottom: '0',
+                }}
+                onMouseEnter={(e) => {
+                  if (!isOpen) {
+                    e.currentTarget.style.background = '#1f2937'
+                  }
+                }}
+                onMouseLeave={(e) => {
+                  if (!isOpen) {
+                    e.currentTarget.style.background = '#111827'
+                  }
+                }}
+              >
+                <button
+                  className="w-full flex items-center justify-between focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-offset-black focus:ring-[#f8f9fa] rounded-[10px]"
                   style={{
-                    background: open === f.id ? '#122036' : hovered === f.id ? '#101E33' : '#0F1A2B',
-                    borderColor: 'rgba(255,255,255,0.06)',
-                    boxShadow: '0 16px 40px rgba(0,0,0,0.35), inset 0 1px 0 rgba(255,255,255,0.06)',
+                    padding: '16px 20px',
                   }}
-                  onMouseEnter={() => setHovered(f.id)}
-                  onMouseLeave={() => setHovered((h) => (h === f.id ? null : h))}
+                  onClick={() => toggleItem(f.id)}
+                  onKeyDown={(e) => handleKeyDown(e, f.id)}
+                  aria-expanded={isOpen}
+                  aria-controls={`content-${f.id}`}
+                  id={`faq-button-${f.id}`}
                 >
-                  <div className="px-6 py-5 md:px-6" style={{ paddingBottom: open === f.id ? 22 : 12 }}>
-                    <div role="heading" aria-level={3} className="flex items-start">
-                      <AccordionTrigger
-                        className={cn(
-                          'group relative flex w-full items-center justify-between text-left font-bold outline-none [&>svg]:hidden pr-14',
-                          'focus-visible:ring-2 focus-visible:ring-[#7E3AF2] focus-visible:ring-offset-2 focus-visible:ring-offset-transparent rounded-[12px]',
-                        )}
-                        style={{ color: '#E5E7EB', fontSize: 17, lineHeight: 1.4 }}
-                        aria-controls={`faq-panel-${f.id}`}
-                        aria-expanded={open === f.id}
-                      >
-                        <span className="pr-6">{f.q}</span>
-                        <span className="pointer-events-none absolute right-3 top-1/2 -translate-y-1/2 inline-flex h-10 w-10 items-center justify-center" aria-hidden>
-                          <svg
-                            className="h-5 w-5 shrink-0 transition-transform"
-                            style={{
-                              color: open === f.id || hovered === f.id ? '#C5D2E3' : '#97A6BA',
-                              transform: !prefersReduced && open === f.id ? 'rotate(180deg)' : 'rotate(0deg)',
-                              transition: 'transform 220ms cubic-bezier(.2,.8,.2,1)',
-                            }}
-                            viewBox="0 0 24 24"
-                            fill="none"
-                            stroke="currentColor"
-                            strokeWidth="2"
-                            strokeLinecap="round"
-                            strokeLinejoin="round"
-                          >
-                            <polyline points="6 9 12 15 18 9"></polyline>
-                          </svg>
-                        </span>
-                      </AccordionTrigger>
-                    </div>
-
-                    <AccordionContent asChild>
-                      <div
-                        id={`faq-panel-${f.id}`}
-                        role="region"
-                        aria-labelledby={`faq-${f.id}`}
-                        className="overflow-hidden"
-                        style={{
-                          color: '#A8B3C5',
-                          fontSize: 16,
-                          lineHeight: 1.75,
-                          transition: 'opacity 260ms cubic-bezier(.2,.8,.2,1), transform 260ms cubic-bezier(.2,.8,.2,1), background-color 220ms',
-                          opacity: open === f.id ? 1 : 0,
-                          transform: prefersReduced ? 'none' : open === f.id ? 'translateY(0)' : 'translateY(6px)',
-                        }}
-                      >
-                        <div className="pt-3 pr-2" style={{ maxWidth: '85ch' }}>{f.a}</div>
-                      </div>
-                    </AccordionContent>
-                  </div>
-
-                  {open === f.id && (
-                    <div
-                      aria-hidden
-                      className="pointer-events-none absolute inset-x-0 top-0 h-px rounded-[16px]"
+                  <span 
+                    className="text-base sm:text-lg font-medium text-left pr-4"
+                    style={{ color: '#e5e7eb' }}
+                  >
+                    {f.q}
+                  </span>
+                  <div className="flex-shrink-0">
+                    <svg
+                      className="w-5 h-5 transition-transform duration-300 ease-in-out"
                       style={{
-                        background:
-                          'linear-gradient(90deg, rgba(126,58,242,.35), rgba(14,165,233,.35))',
+                        color: '#e5e7eb',
+                        transform: isOpen ? 'rotate(180deg)' : 'rotate(0deg)',
                       }}
-                    />
-                  )}
-                </AccordionItem>
-              </motion.li>
-            ))}
-          </Accordion>
-        </motion.ul>
+                      fill="none"
+                      stroke="currentColor"
+                      viewBox="0 0 24 24"
+                      aria-hidden="true"
+                    >
+                      <path
+                        strokeLinecap="round"
+                        strokeLinejoin="round"
+                        strokeWidth={2}
+                        d="M19 9l-7 7-7-7"
+                      />
+                    </svg>
+                  </div>
+                </button>
+                <div
+                  ref={(el) => {
+                    contentRefs.current[`content-${f.id}`] = el
+                  }}
+                  id={`content-${f.id}`}
+                  className="overflow-hidden transition-all duration-300 ease-in-out"
+                  style={{
+                    maxHeight: '0px',
+                  }}
+                  role="region"
+                  aria-labelledby={`faq-button-${f.id}`}
+                >
+                  <p 
+                    className="px-5 pb-4 pt-0"
+                    style={{
+                      color: '#e5e7eb',
+                      fontSize: '16px',
+                      lineHeight: '1.6',
+                    }}
+                  >
+                    {f.a}
+                  </p>
+                </div>
+              </div>
+            )
+          })}
+        </div>
       </div>
     </section>
   )
