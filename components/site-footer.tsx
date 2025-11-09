@@ -6,7 +6,7 @@ const linkClasses =
 function FooterLink({ href, children }: { href: string; children: React.ReactNode }) {
   return (
     <a href={href} className={linkClasses}>
-      <span className="relative after:absolute after:left-0 after:-bottom-0.5 after:h-px after:w-0 after:bg-current after:transition-[width] after:duration-200 after:ease-[cubic-bezier(.2,.8,.2,1)] hover:after:w-full">
+      <span className="relative footer-link-after after:absolute after:left-0 after:-bottom-0.5 after:h-px after:w-0 after:bg-current after:transition-[width] after:duration-200 hover:after:w-full">
         {children}
       </span>
     </a>

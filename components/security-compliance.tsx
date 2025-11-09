@@ -135,8 +135,9 @@ export function SecurityCompliance() {
             >
               {/* Card Container */}
               <div 
-                className="relative h-full p-6 md:p-8 rounded-[20px] border transition-all duration-220 ease-[cubic-bezier(.2,.8,.2,1)] focus-within:ring-2 focus-within:ring-[#93C5FD] focus-within:ring-offset-2 focus-within:ring-offset-[#0B0F14]"
+                className="relative h-full p-6 md:p-8 rounded-[20px] border transition-all duration-220 focus-within:ring-2 focus-within:ring-[#93C5FD] focus-within:ring-offset-2 focus-within:ring-offset-[#0B0F14]"
                 style={{
+                  transitionTimingFunction: 'cubic-bezier(0.2, 0.8, 0.2, 1)',
                   background: "#0F1A2B",
                   borderColor: "rgba(255,255,255,0.06)",
                   boxShadow: "0 20px 50px rgba(0,0,0,0.45)",

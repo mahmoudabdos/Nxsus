@@ -152,6 +152,11 @@
   .hover\:scale-102:hover {
     transform: scale(1.02);
   }
+
+  /* Custom transition timing for footer links */
+  .footer-link-after::after {
+    transition-timing-function: cubic-bezier(0.2, 0.8, 0.2, 1);
+  }
 }
 
 /* Typography scale for modern grotesk feel */
